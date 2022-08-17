@@ -1,0 +1,5 @@
+rootProject.name = 'clientcontext'
+
+include 'common'
+include 'bungee'
+include 'bukkit'

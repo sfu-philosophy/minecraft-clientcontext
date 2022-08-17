@@ -1,0 +1,7 @@
+name: ClientContext
+author: eth-p
+version: ${version}
+main: dev.ethp.clientcontext.BukkitPlugin
+api-version: 1.16
+depend:
+  - LuckPerms

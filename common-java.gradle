@@ -1,0 +1,39 @@
+sourceCompatibility = JavaVersion.VERSION_15
+targetCompatibility = JavaVersion.VERSION_15
+
+repositories {
+    mavenCentral()
+
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/central' }
+    maven { url = 'https://repo.opencollab.dev/maven-snapshots' }
+    maven { url = 'https://jitpack.io' }
+
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        content {
+            includeGroup 'org.bukkit'
+            includeGroup 'org.spigotmc'
+        }
+    }
+}
+
+dependencies {
+    implementation 'net.luckperms:api:5.4'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+
+    // Annotations.
+    implementation 'org.jetbrains:annotations:23.0.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+processResources {
+    filesMatching('*.yml') {
+        expand(
+                "version": project.version.toString()
+        )
+    }
+}

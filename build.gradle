@@ -1,0 +1,25 @@
+plugins {
+    id 'java-library'
+}
+
+apply from: 'common.gradle'
+
+// Parent project should not compile anything.
+build.enabled = false
+sourceSets {
+    main {
+        java { srcDirs = [] }
+    }
+    test {
+        java { srcDirs = [] }
+    }
+}
+
+// Include all subprojects.
+jar {
+    from {
+        subprojects.collect {
+            it.sourceSets.main.output
+        }
+    }
+}

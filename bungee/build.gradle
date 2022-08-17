@@ -1,0 +1,16 @@
+plugins {
+    id 'java-library'
+}
+
+apply from: '../common.gradle'
+apply from: '../common-java.gradle'
+
+dependencies {
+    implementation project(':common')
+
+    implementation 'org.geysermc:geyser-api:2.0.0-SNAPSHOT'
+    implementation 'org.geysermc.floodgate:api:2.0-SNAPSHOT'
+
+    // Bungeecord
+    implementation 'net.md-5:bungeecord-api:1.16-R0.5-SNAPSHOT'
+}
