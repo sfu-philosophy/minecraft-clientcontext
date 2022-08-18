@@ -20,6 +20,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class BukkitPlugin extends JavaPlugin implements PluginMessageListener, Listener, ContextCalculator<Player> {
@@ -94,15 +95,23 @@ public class BukkitPlugin extends JavaPlugin implements PluginMessageListener, L
 	}
 
 	@Override
-	public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte[] message) {
+	public void onPluginMessageReceived(@NotNull String channel, @NotNull Player receiver, byte[] message) {
 		if (!channel.equals(Constants.CHANNEL)) return;
 		Set<ContextData> contexts = new HashSet<>();
+		Player player;
 
 		// Read the contexts from the BungeeCord plugin.
 		try {
 			DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
 			String command = in.readUTF();
 			if (!command.equalsIgnoreCase("sync")) {
+				return;
+			}
+
+			String uuidString = in.readUTF();
+			player = getServer().getPlayer(UUID.fromString(uuidString));
+			if (player == null) {
+				getLogger().warning("Received data for player not in this server: " + uuidString);
 				return;
 			}
 

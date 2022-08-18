@@ -23,6 +23,7 @@ import java.util.logging.Logger;
  *
  * <pre>
  * [string] "sync"
+ * [string] PLAYER_UUID
  * [short] ITEM_COUNT
  * for ITEM_COUNT
  *     [string] CONTEXT_KEY
@@ -84,6 +85,7 @@ public class ContextSync implements Listener {
 		try {
 			DataOutputStream szWriter = new DataOutputStream(szBuffer);
 			szWriter.writeUTF("sync");
+			szWriter.writeUTF(player.getUniqueId().toString());
 			szWriter.writeShort(builder.contexts.size());
 			for (var context : builder.contexts) {
 				szWriter.writeUTF(context.getKey());
