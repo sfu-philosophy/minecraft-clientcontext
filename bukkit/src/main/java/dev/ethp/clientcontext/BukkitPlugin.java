@@ -83,6 +83,7 @@ public class BukkitPlugin extends JavaPlugin implements PluginMessageListener, L
 			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 			DataOutputStream out = new DataOutputStream(buffer);
 			out.writeUTF("fetch");
+			out.writeUTF(player.getUniqueId().toString());
 
 			player.sendPluginMessage(this, Constants.CHANNEL, buffer.toByteArray());
 		} catch (Exception ex) {

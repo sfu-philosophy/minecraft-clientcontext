@@ -1,6 +1,7 @@
 package dev.ethp.clientcontext;
 
 import net.luckperms.api.context.ContextCalculator;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -14,6 +15,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,10 +35,12 @@ import java.util.logging.Logger;
 public class ContextSync implements Listener {
 	private final Set<ContextCalculator<ProxiedPlayer>> calculators;
 	private final Logger logger;
+	private final ProxyServer server;
 
 	public ContextSync(@NotNull Plugin plugin, @NotNull Set<ContextCalculator<ProxiedPlayer>> calculators) {
 		this.calculators = calculators;
 		this.logger = plugin.getLogger();
+		this.server = plugin.getProxy();
 	}
 
 	/**
@@ -47,10 +51,12 @@ public class ContextSync implements Listener {
 	public void onMessage(PluginMessageEvent event) {
 		if (!event.getTag().equals(Constants.CHANNEL)) return;
 		String command;
+		ProxiedPlayer player = event.getReceiver() instanceof ProxiedPlayer ? (ProxiedPlayer) event.getReceiver() : null;
 		DataInputStream in = new DataInputStream(new ByteArrayInputStream(event.getData()));
 
 		try {
 			command = in.readUTF();
+
 		} catch (IOException ex) {
 			logger.log(Level.WARNING, "Unable to read plugin message command.");
 			return;
@@ -59,10 +65,16 @@ public class ContextSync implements Listener {
 		// "fetch" command.
 		// Asks the BungeeCord server to send over the calculated contexts.
 		if (command.equalsIgnoreCase("fetch")) {
-			if (event.getReceiver() instanceof ProxiedPlayer) {
-				sendContexts((ProxiedPlayer) event.getReceiver());
+			try {
+				String uuidString = in.readUTF();
+				player = server.getPlayer(UUID.fromString(uuidString));
+			} catch (IOException ex) {
+				logger.log(Level.WARNING, "Unable to read plugin message command.");
 				return;
 			}
+
+			sendContexts(player);
+			return;
 		}
 
 		logger.log(Level.WARNING, "Unable to dispatch plugin message command '" + command + "'.");
