@@ -4,6 +4,3 @@ plugins {
 
 apply from: '../common.gradle'
 apply from: '../common-java.gradle'
-
-dependencies {
-}

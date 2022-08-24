@@ -1,7 +1,9 @@
 name: ClientContext
 author: eth-p
 version: ${version}
-main: dev.ethp.clientcontext.BukkitPlugin
+main: dev.ethp.clientcontext.bukkit.BukkitPlugin
 api-version: 1.16
 depend:
   - LuckPerms
+softdepend:
+  - floodgate

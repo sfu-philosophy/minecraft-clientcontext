@@ -19,8 +19,12 @@ repositories {
 }
 
 dependencies {
-    implementation 'net.luckperms:api:5.4'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+
+    // Plugins.
+    implementation 'net.luckperms:api:5.4'
+    implementation 'org.geysermc:geyser-api:2.0.0-SNAPSHOT'
+    implementation 'org.geysermc.floodgate:api:2.0-SNAPSHOT'
 
     // Annotations.
     implementation 'org.jetbrains:annotations:23.0.0'
